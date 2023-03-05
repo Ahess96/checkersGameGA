@@ -1,0 +1,51 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+header {
+    font-size: 3vmin;
+    letter-spacing: 1.5vmin;
+    font-weight: 700;
+    border: .2vmin solid lightgray;
+    border-radius: .7vmin;
+    padding: 1.5vmin 3vmin;
+    margin-top: 1vmin;
+}
+
+h1 {
+    font-weight: 300;
+    font-size: 3vmin;
+    margin: .2vmin;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(8, 10vmin);
+    grid-template-rows: repeat(8, 10vmin);
+    gap: 0.2vmin;
+    border: .4vmin solid brown;
+}
+
+#board > div {
+    border: 0.1vmin solid black;
+    transform: scale(0.965);
+}
+
+#board >div:hover {
+    transform: scale(1);
+    transition: transform 150ms ease-in;
+    border-color: red;
+}
+
+button {
+    margin-top: 2vmin;
+}
