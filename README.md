@@ -10,6 +10,42 @@ There is no plans to have pieces be able to become a king piece.
 
 
 
+click act like aswitch
+    first click = true, 2nd false
+then build control flow
+when 1st click is something, grab it
+2nd click move it
+
+
+
+function activePiece () {
+    boardDivs.forEach(div => {
+        div.addEventListener('click', function () {
+            if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
+                console.log('green');
+                // need to update this so that only one div can be active at a time
+                div.setAttribute('class', 'active')
+                div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
+                movePiece();
+            } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
+                console.log('red');
+                div.setAttribute('class', 'active')
+                div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
+                movePiece();
+            }
+        })
+    })
+}
+
+
+// When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
+function movePiece (event) {
+    // select currently active piece
+    
+    console.log(event);
+    turn *= -1;
+    render();
+}
 
 
 
@@ -28,21 +64,6 @@ There is no plans to have pieces be able to become a king piece.
 
 
 
-// function activePiece () { 
-//     boardDivs.forEach(div => {
-//     // if it's green's turn, there's no winner and they click on one of their pieces, give that piece (div) a class of active and evoke movePiece
-//     if (div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
-//         div.addEventListener('click', function () {
-//             console.log('green')
-//             div.setAttribute('class', 'active')
-//             movePiece();
-//         });
-//     } else if (div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
-//         div.addEventListener('click', function () {
-//             console.log('red')
-//             div.setAttribute('class', 'active')
-//             movePiece();
-//             }); 
-//         }
-//     })
-// }
+
+
+

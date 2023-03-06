@@ -31,7 +31,7 @@ h1 {
     display: grid;
     grid-template-columns: repeat(8, 10vmin);
     grid-template-rows: repeat(8, 10vmin);
-    gap: 0.2vmin;
+    /* gap: 0.2vmin; */
     border: .4vmin solid brown;
 }
 

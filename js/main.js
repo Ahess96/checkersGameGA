@@ -16,9 +16,10 @@ let king; // new rules for pieces that have become kings
 const msgEl = document.querySelector('h1');
 const btn = document.querySelector('button');
 let boardDivs = document.querySelectorAll('#board > div');
+let gameBoard = document.getElementById('board')
 
   /*----- event listeners -----*/
-// document.getElementById('board').addEventListener('click', movePiece);
+// gameBoard.addEventListener('click', movePiece);
 
   /*----- functions -----*/
 // initialize state of the board then evoke render ()
@@ -38,23 +39,24 @@ function init () {
     ];
     turn = -1;
     winner = null;
+    // activePiece = null;
     render();
 }
 
 function activePiece () {
     boardDivs.forEach(div => {
-        div.addEventListener('click', function () {
+        div.addEventListener('click', function (event) {
             if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
                 console.log('green');
                 // need to update this so that only one div can be active at a time
                 div.setAttribute('class', 'active')
                 div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
-                movePiece();
+                movePiece(event);
             } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
                 console.log('red');
                 div.setAttribute('class', 'active')
                 div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
-                movePiece();
+                movePiece(event);
             }
         })
     })
@@ -69,6 +71,14 @@ function movePiece (event) {
     turn *= -1;
     render();
 }
+
+
+// function movePiece (evt) {
+//     let activePiece = evt.target;
+
+//     console.log(activePiece);
+// }
+
 
 function render () {
     renderBoard();
