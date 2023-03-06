@@ -55,15 +55,14 @@ function activePiece () {
             console.log('red')
             div.setAttribute('class', 'active')
             movePiece();
-        }); 
-    }
-})
+            }); 
+        }
+    })
 }
 
 // When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
 function movePiece (evt) {
     // select currently active piece
-
     turn *= -1;
     render();
 }
@@ -103,4 +102,3 @@ function renderControls () {
 
 }
 
-// This needs to be at the bottom so the color assignment to each div is handled first
