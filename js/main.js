@@ -41,28 +41,29 @@ function init () {
     render();
 }
 
-function activePiece () { 
+function activePiece () {
     boardDivs.forEach(div => {
-    // if it's green's turn, there's no winner and they click on one of their pieces, give that piece (div) a class of active and evoke movePiece
-    if (div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
         div.addEventListener('click', function () {
-            console.log('green')
-            div.setAttribute('class', 'active')
-            movePiece();
-        });
-    } else if (div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
-        div.addEventListener('click', function () {
-            console.log('red')
-            div.setAttribute('class', 'active')
-            movePiece();
-            }); 
-        }
+            if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
+                console.log('green');
+                // need to update this so that only one div can be active at a time
+                div.setAttribute('class', 'active')
+                movePiece();
+            } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
+                console.log('red');
+                div.setAttribute('class', 'active')
+                movePiece();
+            }
+        })
     })
 }
+
 
 // When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
 function movePiece (evt) {
     // select currently active piece
+    // move piece
+    evt.target
     turn *= -1;
     render();
 }
@@ -92,9 +93,9 @@ function renderBoard () {
 
 function renderMessage () {
     if(winner) {
-        msgEl.innerHTML = `<span style="color: ${colors[winner]}">${colors[winner].toUpperCase()}</span> Won!`;
+        msgEl.innerHTML = `<span style="color: ${colors[winner]}">${colors[winner].toUpperCase()} Won!</span>`;
     } else {
-        msgEl.innerHTML = `<span style="color: ${colors[turn]}">${colors[turn].toUpperCase()}</span>'s Turn...`;
+        msgEl.innerHTML = `<span style="color: ${colors[turn]}">${colors[turn].toUpperCase()}'s Turn...</span>`;
     }
 }
 
