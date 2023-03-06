@@ -48,10 +48,12 @@ function activePiece () {
                 console.log('green');
                 // need to update this so that only one div can be active at a time
                 div.setAttribute('class', 'active')
+                div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
                 movePiece();
             } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
                 console.log('red');
                 div.setAttribute('class', 'active')
+                div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
                 movePiece();
             }
         })
@@ -60,10 +62,10 @@ function activePiece () {
 
 
 // When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
-function movePiece (evt) {
+function movePiece (event) {
     // select currently active piece
-    // move piece
-    evt.target
+    
+    console.log(event);
     turn *= -1;
     render();
 }
