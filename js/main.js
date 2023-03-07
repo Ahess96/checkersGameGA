@@ -8,7 +8,7 @@ const colors = {
   /*----- state variables -----*/
 let board; // Array of 8 column arrays with 8 indexes
 let turn; // 1 or -1
-// let activePiece;
+let activePiece;
 let winner; // null = no winner; 1/-1 = winner
 let king; // new rules for pieces that have become kings
 
@@ -39,24 +39,33 @@ function init () {
     ];
     turn = -1;
     winner = null;
-    // activePiece = null;
+    activePiece = false;
     render();
 }
 
-function activePiece () {
+function selectActivePiece () {
     boardDivs.forEach(div => {
         div.addEventListener('click', function (event) {
-            if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
-                console.log('green');
-                // need to update this so that only one div can be active at a time
-                div.setAttribute('class', 'active')
-                div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
-                movePiece(event);
-            } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
-                console.log('red');
-                div.setAttribute('class', 'active')
-                div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
-                movePiece(event);
+            if(activePiece === false) {
+                if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
+                    activePiece = true
+                    console.log('green');
+                    // need to update this so that only one div can be active at a time
+                    // div.setAttribute('class', 'active')
+                    div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
+                    movePiece(event);
+                } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
+                    activePiece = true
+                    console.log('red');
+                    // div.setAttribute('class', 'active')
+                    div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
+                    movePiece(event);
+                }
+                // else {
+                //     deselect active piece
+                // }
+            } else if(activePiece === true) {
+                div.style.backgroundColor = 'black';
             }
         })
     })
@@ -64,10 +73,12 @@ function activePiece () {
 
 
 // When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
+
+
 function movePiece (event) {
     // select currently active piece
     
-    console.log(event);
+    console.log(event.target);
     turn *= -1;
     render();
 }
@@ -84,7 +95,7 @@ function render () {
     renderBoard();
     renderMessage();
     renderControls();
-    activePiece();
+    selectActivePiece();
 }
 
 // The following function was influenced by GA's code along for Connect Four **

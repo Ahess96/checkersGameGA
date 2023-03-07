@@ -18,37 +18,30 @@ when 1st click is something, grab it
 
 
 
-function activePiece () {
-    boardDivs.forEach(div => {
-        div.addEventListener('click', function () {
-            if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
-                console.log('green');
-                // need to update this so that only one div can be active at a time
-                div.setAttribute('class', 'active')
-                div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
-                movePiece();
-            } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
-                console.log('red');
-                div.setAttribute('class', 'active')
-                div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)'
-                movePiece();
-            }
-        })
-    })
-}
-
-
-// When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
-function movePiece (event) {
-    // select currently active piece
-    
-    console.log(event);
-    turn *= -1;
-    render();
-}
 
 
 
+how to tell if we're at click one or two
+
+first click is grabbing el, so var off
+click pie
+
+use activePiece to toggle
+
+
+boardDivs.forEach(div => {
+    div.addEventListener('click', function (event) {
+        if (activePiece === false) {
+            const newLocation = (event.target);
+            renderBoard(newLocation)
+        }
+    }
+} 
+
+let boardDivs = [...document.querySelectorAll('#board > div')];
+const colIdx = boardDivs.indexOf(evt.target);
+const colArr = board[colIdx]
+console.log(colIdx)
 
 
 
