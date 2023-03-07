@@ -59,7 +59,7 @@ function selectActivePiece () {
                     // need to update this so that only one div can be active at a time
                     div.setAttribute('class', 'active')
                     div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
-                    movePiece(event);
+                    selectGreen(event);
                 } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
                     activePiece = true
                     console.log('red');
@@ -71,8 +71,7 @@ function selectActivePiece () {
                 //     deselect active piece
             //     // }
             } else if(activePiece === true) {
-                div.style.backgroundColor = 'black';
-                activePiece = false;
+                moveRed(event);
             }
         })
     })
@@ -80,8 +79,24 @@ function selectActivePiece () {
 
 
 // When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
-function selectGreen () {
-
+function selectGreen (event) {
+    const greenPiece = event.target;
+    const id = greenPiece.id;
+    const row = Number(id.charAt(1));
+    const col = Number(id.charAt(3));
+    const moveLeftRow = row + 1;
+    const moveLeftCol = col - 1;
+    const moveRightRow = row + 1;
+    const moveRightCol = col + 1;
+    // const leftTileValue = board[moveLeftRow][moveLeftCol];
+    // const rightTileValue = board[moveRightRow][moveRightCol];
+    if (board[moveRightRow][moveRightCol] === 0) {
+        board[moveRightRow][moveRightCol] = 2;
+    }
+    if (board[moveLeftRow][moveLeftCol] === 0) {
+        board[moveLeftRow][moveLeftCol] = 2;
+    }
+    renderBoard();
 }
 
 function selectRed (event) {
@@ -93,20 +108,55 @@ function selectRed (event) {
     const moveLeftCol = col - 1;
     const moveRightRow = row - 1;
     const moveRightCol = col + 1;
-    const leftTileValue = board[moveLeftRow][moveLeftCol];
-    const rightTileValue = board[moveRightRow][moveRightCol];
-    board[moveLeftRow][moveLeftCol] = 2;
-    board[moveRightRow][moveRightCol] = 2;
+    // const leftTileValue = board[moveLeftRow][moveLeftCol];
+    // const rightTileValue = board[moveRightRow][moveRightCol];
+    if (board[moveRightRow][moveRightCol] === 0) {
+        board[moveRightRow][moveRightCol] = 2;
+    }
+    if (board[moveLeftRow][moveLeftCol] === 0) {
+        board[moveLeftRow][moveLeftCol] = 2;
+    }
     renderBoard();
 }
 
-function movePiece (event) {
+function moveRed (event) {
     // select currently active piece
+    const selectedPiece = event.target;
+    const id = selectedPiece.id;
+    const row = Number(id.charAt(1));
+    const col = Number(id.charAt(3));
+    if (board[row][col] === 2 && turn === -1) {
+        board[row][col] = -1;
+        activePiece = false;
+        turn *= -1;
+    
+        
+    } else if (board[row][col] === 2 && turn === 1) {
+        board[row][col] = 1;
+        activePiece = false;
+        turn *= -1;
+    
+    }
     console.log(event.target);
-    turn *= -1;
-    activePiece = false;
+    // activePiece = false;
+    // turn *= -1;
     render();
 }
+
+// function moveGreen (event) {
+//     // select currently active piece
+//     const selectedPiece = event.target;
+//     const id = selectedPiece.id;
+//     const row = Number(id.charAt(1));
+//     const col = Number(id.charAt(3));
+//     if (board[row][col] === 2) {
+//         board[row][col] = 1;
+//     }
+//     console.log(event.target);
+//     turn *= -1;
+//     activePiece = false;
+//     render();
+// }
 
 
 // function movePiece (evt) {
@@ -135,6 +185,9 @@ function renderBoard () {
             cellEl.style.backgroundColor = colors[cellVal];
             if(cellVal === 1 || cellVal === -1)
                 cellEl.style.borderRadius = '50%';
+            if(cellVal === 2 && activePiece === false) {
+                return cellVal = 0;
+            }
         });
     });
 }
