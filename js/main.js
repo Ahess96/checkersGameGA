@@ -129,13 +129,11 @@ function moveRed (event) {
         board[row][col] = -1;
         activePiece = false;
         turn *= -1;
-    
         
     } else if (board[row][col] === 2 && turn === 1) {
         board[row][col] = 1;
         activePiece = false;
         turn *= -1;
-    
     }
     console.log(event.target);
     // activePiece = false;
@@ -183,8 +181,9 @@ function renderBoard () {
             const cellId = `r${rowIdx}c${colIdx}`;
             const cellEl = document.getElementById(cellId);
             cellEl.style.backgroundColor = colors[cellVal];
-            if(cellVal === 1 || cellVal === -1)
+            if(cellVal === 1 || cellVal === -1) {
                 cellEl.style.borderRadius = '50%';
+            }
             if(cellVal === 2 && activePiece === false) {
                 return cellVal = 0;
             }
