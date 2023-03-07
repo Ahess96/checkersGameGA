@@ -20,6 +20,7 @@ let gameBoard = document.getElementById('board')
 
   /*----- event listeners -----*/
 // gameBoard.addEventListener('click', movePiece);
+btn.addEventListener('click', init);
 
   /*----- functions -----*/
 // initialize state of the board then evoke render ()
@@ -37,6 +38,10 @@ function init () {
         [-1, 0, -1, 0, -1, 0, -1, 0],
         [0, -1, 0, -1, 0, -1, 0, -1],
     ];
+    boardDivs.forEach(div => {
+        div.classList.remove('active');
+        div.style.boxShadow = 'none';
+    })
     turn = -1;
     winner = null;
     activePiece = false;
@@ -51,21 +56,22 @@ function selectActivePiece () {
                     activePiece = true
                     console.log('green');
                     // need to update this so that only one div can be active at a time
-                    // div.setAttribute('class', 'active')
+                    div.setAttribute('class', 'active')
                     div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
                     movePiece(event);
                 } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
                     activePiece = true
                     console.log('red');
-                    // div.setAttribute('class', 'active')
+                    div.setAttribute('class', 'active')
                     div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
                     movePiece(event);
                 }
                 // else {
                 //     deselect active piece
-                // }
+            //     // }
             } else if(activePiece === true) {
                 div.style.backgroundColor = 'black';
+                activePiece = false;
             }
         })
     })
@@ -77,7 +83,7 @@ function selectActivePiece () {
 
 function movePiece (event) {
     // select currently active piece
-    
+    selectActivePiece(event);
     console.log(event.target);
     turn *= -1;
     render();
@@ -96,6 +102,7 @@ function render () {
     renderMessage();
     renderControls();
     selectActivePiece();
+    activePiece = false;
 }
 
 // The following function was influenced by GA's code along for Connect Four **
