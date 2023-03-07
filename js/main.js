@@ -2,7 +2,8 @@
 const colors = {
     '0': 'white',
     '1': 'green',
-    '-1': 'red'
+    '-1': 'red',
+    '2' : 'yellow'
 }
 
   /*----- state variables -----*/
@@ -64,7 +65,7 @@ function selectActivePiece () {
                     console.log('red');
                     div.setAttribute('class', 'active')
                     div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
-                    movePiece(event);
+                    selectRed(event);
                 }
                 // else {
                 //     deselect active piece
@@ -79,13 +80,31 @@ function selectActivePiece () {
 
 
 // When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
+function selectGreen () {
 
+}
+
+function selectRed (event) {
+    const redPiece = event.target;
+    const id = redPiece.id;
+    const row = Number(id.charAt(1));
+    const col = Number(id.charAt(3));
+    const moveLeftRow = row - 1;
+    const moveLeftCol = col - 1;
+    const moveRightRow = row - 1;
+    const moveRightCol = col + 1;
+    const leftTileValue = board[moveLeftRow][moveLeftCol];
+    const rightTileValue = board[moveRightRow][moveRightCol];
+    board[moveLeftRow][moveLeftCol] = 2;
+    board[moveRightRow][moveRightCol] = 2;
+    renderBoard();
+}
 
 function movePiece (event) {
     // select currently active piece
-    selectActivePiece(event);
     console.log(event.target);
     turn *= -1;
+    activePiece = false;
     render();
 }
 
@@ -102,17 +121,16 @@ function render () {
     renderMessage();
     renderControls();
     selectActivePiece();
-    activePiece = false;
 }
 
 // The following function was influenced by GA's code along for Connect Four **
 function renderBoard () {
     // render the board such that the values held in the board array are reflected by the color of the player's pieces
     // this iterates through each array in board
-    board.forEach(function(colArr, colIdx) {
-        // now iterate through each index within the nested arrays which represent columns
-        colArr.forEach(function(cellVal, rowIdx) {
-            const cellId = `c${colIdx}r${rowIdx}`;
+    board.forEach(function(rowArr, rowIdx) {
+        // now iterate through each index within the nested arrays which represent row
+        rowArr.forEach(function(cellVal, colIdx) {
+            const cellId = `r${rowIdx}c${colIdx}`;
             const cellEl = document.getElementById(cellId);
             cellEl.style.backgroundColor = colors[cellVal];
             if(cellVal === 1 || cellVal === -1)
