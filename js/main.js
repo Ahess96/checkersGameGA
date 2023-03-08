@@ -48,34 +48,31 @@ function init () {
     render();
 }
 
-// function selectActivePiece () {
-    boardDivs.forEach(div => {
-        div.addEventListener('click', function (event) {
-            if(isPieceActive === false) {
-                if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
-                    isPieceActive = true
-                    // need to update this so that only one div can be active at a time
-                    div.setAttribute('class', 'active')
-                    selectGreen(event);
+boardDivs.forEach(div => {
+    div.addEventListener('click', function (event) {
+        if(isPieceActive === false) {
+            if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
+                isPieceActive = true
+                div.setAttribute('class', 'active')
+                selectGreen(event);
 
-                } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
-                    isPieceActive = true
-                    div.setAttribute('class', 'active')
-                    selectRed(event);
-                }
-            } else if(isPieceActive === true) {
-                if (div.style.backgroundColor === 'red' || div.style.backgroundColor === 'green') {
-                    let activeDiv = document.querySelector('.active');
-                    activeDiv.classList.remove('active');
-                    isPieceActive = false;
-                    renderBoard();
-                    return;
-                } 
-                move(event);
+            } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
+                isPieceActive = true
+                div.setAttribute('class', 'active')
+                selectRed(event);
             }
-        })
+        } else if(isPieceActive === true) {
+            if (div.style.backgroundColor === 'red' || div.style.backgroundColor === 'green') {
+                let activeDiv = document.querySelector('.active');
+                activeDiv.classList.remove('active');
+                isPieceActive = false;
+                renderBoard();
+                return;
+            } 
+            move(event);
+        }
     })
-// }
+})
 
 
 // When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
@@ -143,24 +140,75 @@ function move (event) {
     const col = Number(id.charAt(3));
     if (board[row][col] === 2 && turn === -1) {
         board[row][col] = -1;
+        const justMovedPiece = document.getElementById(`r${row}c${col}`);
+        justMovedPiece.setAttribute('class', 'just-moved');
+        captureGreenPiece();
         isPieceActive = false;
         turn *= -1;
         
     } else if (board[row][col] === 2 && turn === 1) {
         board[row][col] = 1;
+        const justMovedPiece = document.getElementById(`r${row}c${col}`);
+        justMovedPiece.setAttribute('class', 'just-moved');
+        captureRedPiece();
         isPieceActive = false;
         turn *= -1;
     } else {
         return;
     }
-    console.log(event.target);
     let activePieces = document.querySelector('.active');
     let activePiecesId = activePieces.id;
     const activePiecesRow = Number(activePiecesId.charAt(1));
     const activePiecesCol = Number(activePiecesId.charAt(3));
     board[activePiecesRow][activePiecesCol] = 0;
     activePieces.classList.remove('active');
+    let movedPeice = document.querySelector('.just-moved');
+    movedPeice.classList.remove('just-moved');
     render();
+}
+
+function captureRedPiece () {
+    // case for red being captured
+    let activePieces = document.querySelector('.active');
+    let activePiecesId = activePieces.id;
+    const row = Number(activePiecesId.charAt(1));
+    const col = Number(activePiecesId.charAt(3));
+    const moveLeftRowGreen = row + 1;
+    const moveLeftColGreen = col - 1;
+    const moveRightRowGreen = row + 1;
+    const moveRightColGreen = col + 1;
+    const rightOfGreen = board[moveRightRowGreen][moveRightColGreen];
+    const leftOfGreen = board[moveLeftRowGreen][moveLeftColGreen];
+    const greenCaptureRight = document.getElementById(`r${row + 2}c${col + 2}`);
+    const greenCaptureLeft = document.getElementById(`r${row + 2}c${col - 2}`);
+    if(leftOfGreen === -1 && greenCaptureLeft.classList.contains('just-moved')) {
+        board[moveLeftRowGreen][moveLeftColGreen] = 0;
+    }
+    if(rightOfGreen === -1 && greenCaptureRight.classList.contains('just-moved')) {
+        board[moveRightRowGreen][moveRightColGreen] = 0;
+    }
+}
+
+// case for green being captured  
+function captureGreenPiece () {
+    let activePieces = document.querySelector('.active');
+    let activePiecesId = activePieces.id;
+    const row = Number(activePiecesId.charAt(1));
+    const col = Number(activePiecesId.charAt(3));
+    const moveLeftRowRed = row - 1;
+    const moveLeftColRed = col - 1;
+    const moveRightRowRed = row - 1;
+    const moveRightColRed = col + 1;
+    const rightOfRed = board[moveRightRowRed][moveRightColRed];
+    const leftOfRed = board[moveLeftRowRed][moveLeftColRed];
+    const redCaptureRight = document.getElementById(`r${row - 2}c${col + 2}`);
+    const redCaptureLeft = document.getElementById(`r${row - 2}c${col - 2}`);
+    if(leftOfRed === 1 && redCaptureLeft.classList.contains('just-moved')) {
+        board[moveLeftRowRed][moveLeftColRed] = 0;
+    }
+    if(rightOfRed === 1 && redCaptureRight.classList.contains('just-moved')) {
+        board[moveRightRowRed][moveRightColRed] = 0;
+    }
 }
 
 
