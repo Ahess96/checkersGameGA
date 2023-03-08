@@ -49,7 +49,7 @@ function init () {
     render();
 }
 
-function selectActivePiece () {
+// function selectActivePiece () {
     boardDivs.forEach(div => {
         div.addEventListener('click', function (event) {
             if(activePiece === false) {
@@ -60,6 +60,7 @@ function selectActivePiece () {
                     div.setAttribute('class', 'active')
                     div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
                     selectGreen(event);
+
                 } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
                     activePiece = true
                     console.log('red');
@@ -67,15 +68,12 @@ function selectActivePiece () {
                     div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
                     selectRed(event);
                 }
-                // else {
-                //     deselect active piece
-            //     // }
             } else if(activePiece === true) {
                 moveRed(event);
             }
         })
     })
-}
+// }
 
 
 // When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
@@ -138,6 +136,12 @@ function moveRed (event) {
     console.log(event.target);
     // activePiece = false;
     // turn *= -1;
+    let activePieces = document.querySelector('.active');
+    let activePiecesId = activePieces.id;
+    const activePiecesRow = Number(activePiecesId.charAt(1));
+    const activePiecesCol = Number(activePiecesId.charAt(3));
+    board[activePiecesRow][activePiecesCol] = 0;
+    activePieces.classList.remove();
     render();
 }
 
@@ -157,18 +161,13 @@ function moveRed (event) {
 // }
 
 
-// function movePiece (evt) {
-//     let activePiece = evt.target;
-
-//     console.log(activePiece);
-// }
 
 
 function render () {
     renderBoard();
     renderMessage();
     renderControls();
-    selectActivePiece();
+    // selectActivePiece();
 }
 
 // The following function was influenced by GA's code along for Connect Four **
