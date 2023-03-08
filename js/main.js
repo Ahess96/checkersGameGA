@@ -87,18 +87,18 @@ function selectGreen (event) {
     let moveRightCol = col + 1;
     // const leftTileValue = board[moveLeftRow][moveLeftCol];
     // const rightTileValue = board[moveRightRow][moveRightCol];
-    if (board[moveRightRow][moveRightCol] === -1) {
+    if (moveRightRow < 8 && board[moveRightRow][moveRightCol] === -1) {
         moveRightRow += 1;
         moveRightCol += 1;
     }
-    if (board[moveRightRow][moveRightCol] === 0) {
+    if (moveRightRow < 8 && board[moveRightRow][moveRightCol] === 0) {
         board[moveRightRow][moveRightCol] = 2;
     }
-    if (board[moveLeftRow][moveLeftCol] === -1) {
+    if (moveLeftRow < 8 && board[moveLeftRow][moveLeftCol] === -1) {
         moveLeftRow += 1;
         moveLeftCol -= 1;
     }
-    if (board[moveLeftRow][moveLeftCol] === 0) {
+    if (moveLeftRow < 8 && board[moveLeftRow][moveLeftCol] === 0) {
         board[moveLeftRow][moveLeftCol] = 2;
     }
     renderBoard();
@@ -113,20 +113,21 @@ function selectRed (event) {
     let moveLeftCol = col - 1;
     let moveRightRow = row - 1;
     let moveRightCol = col + 1;
+    // if ((row > 0 && col > 0) || )
     // const leftTileValue = board[moveLeftRow][moveLeftCol];
     // const rightTileValue = board[moveRightRow][moveRightCol];
-    if (board[moveRightRow][moveRightCol] === 1) {
+    if (moveRightRow > -1 && board[moveRightRow][moveRightCol] === 1) {
         moveRightRow -= 1;
         moveRightCol += 1;
     }
-    if (board[moveRightRow][moveRightCol] === 0) {
+    if (moveRightRow > -1 && board[moveRightRow][moveRightCol] === 0) {
         board[moveRightRow][moveRightCol] = 2;
     }
-    if (board[moveLeftRow][moveLeftCol] === 1) {
+    if (moveLeftRow > -1 && board[moveLeftRow][moveLeftCol] === 1) {
         moveLeftRow -= 1;
         moveLeftCol -= 1;
     }
-    if (board[moveLeftRow][moveLeftCol] === 0) {
+    if (moveLeftRow > -1 && board[moveLeftRow][moveLeftCol] === 0) {
         board[moveLeftRow][moveLeftCol] = 2;
     }
     renderBoard();
@@ -179,14 +180,18 @@ function captureRedPiece () {
     const moveRightColGreen = col + 1;
     const rightOfGreen = board[moveRightRowGreen][moveRightColGreen];
     const leftOfGreen = board[moveLeftRowGreen][moveLeftColGreen];
-    const greenCaptureRight = document.getElementById(`r${row + 2}c${col + 2}`);
-    const greenCaptureLeft = document.getElementById(`r${row + 2}c${col - 2}`);
-    if(leftOfGreen === -1 && greenCaptureLeft.classList.contains('just-moved')) {
-        board[moveLeftRowGreen][moveLeftColGreen] = 0;
+    if (row < 6 && col < 6) {
+        const greenCaptureRight = document.getElementById(`r${row + 2}c${col + 2}`);
+        if(rightOfGreen === -1 && greenCaptureRight.classList.contains('just-moved')) {
+            board[moveRightRowGreen][moveRightColGreen] = 0;
+        }
     }
-    if(rightOfGreen === -1 && greenCaptureRight.classList.contains('just-moved')) {
-        board[moveRightRowGreen][moveRightColGreen] = 0;
-    }
+    if (row < 6 && col > 1) {
+        const greenCaptureLeft = document.getElementById(`r${row + 2}c${col - 2}`);
+        if(leftOfGreen === -1 && greenCaptureLeft.classList.contains('just-moved')) {
+            board[moveLeftRowGreen][moveLeftColGreen] = 0;
+        }
+    } 
 }
 
 // case for green being captured  
@@ -201,13 +206,17 @@ function captureGreenPiece () {
     const moveRightColRed = col + 1;
     const rightOfRed = board[moveRightRowRed][moveRightColRed];
     const leftOfRed = board[moveLeftRowRed][moveLeftColRed];
-    const redCaptureRight = document.getElementById(`r${row - 2}c${col + 2}`);
-    const redCaptureLeft = document.getElementById(`r${row - 2}c${col - 2}`);
-    if(leftOfRed === 1 && redCaptureLeft.classList.contains('just-moved')) {
-        board[moveLeftRowRed][moveLeftColRed] = 0;
+    if (row > 1 && col < 6) {
+        const redCaptureRight = document.getElementById(`r${row - 2}c${col + 2}`);
+        if(rightOfRed === 1 && redCaptureRight.classList.contains('just-moved')) {
+            board[moveRightRowRed][moveRightColRed] = 0;
+        }
     }
-    if(rightOfRed === 1 && redCaptureRight.classList.contains('just-moved')) {
-        board[moveRightRowRed][moveRightColRed] = 0;
+    if (row > 1 && col > 1) {
+        const redCaptureLeft = document.getElementById(`r${row - 2}c${col - 2}`);
+        if(leftOfRed === 1 && redCaptureLeft.classList.contains('just-moved')) {
+            board[moveLeftRowRed][moveLeftColRed] = 0;
+        }
     }
 }
 
@@ -216,7 +225,6 @@ function render () {
     renderBoard();
     renderMessage();
     // renderControls();
-    // selectActivePiece();
 }
 
 // The following function was influenced by GA's code along for Connect Four **
