@@ -9,7 +9,7 @@ const colors = {
   /*----- state variables -----*/
 let board; // Array of 8 column arrays with 8 indexes
 let turn; // 1 or -1
-let activePiece;
+let isPieceActive;
 let winner; // null = no winner; 1/-1 = winner
 let king; // new rules for pieces that have become kings
 
@@ -41,35 +41,37 @@ function init () {
     ];
     boardDivs.forEach(div => {
         div.classList.remove('active');
-        div.style.boxShadow = 'none';
     })
     turn = -1;
     winner = null;
-    activePiece = false;
+    isPieceActive = false;
     render();
 }
 
 // function selectActivePiece () {
     boardDivs.forEach(div => {
         div.addEventListener('click', function (event) {
-            if(activePiece === false) {
+            if(isPieceActive === false) {
                 if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
-                    activePiece = true
-                    console.log('green');
+                    isPieceActive = true
                     // need to update this so that only one div can be active at a time
                     div.setAttribute('class', 'active')
-                    div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
                     selectGreen(event);
 
                 } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
-                    activePiece = true
-                    console.log('red');
+                    isPieceActive = true
                     div.setAttribute('class', 'active')
-                    div.style.boxShadow = '1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4)';
                     selectRed(event);
                 }
-            } else if(activePiece === true) {
-                moveRed(event);
+            } else if(isPieceActive === true) {
+                if (div.style.backgroundColor === 'red' || div.style.backgroundColor === 'green') {
+                    let activeDiv = document.querySelector('.active');
+                    activeDiv.classList.remove('active');
+                    isPieceActive = false;
+                    renderBoard();
+                    return;
+                } 
+                move(event);
             }
         })
     })
@@ -88,6 +90,10 @@ function selectGreen (event) {
     const moveRightCol = col + 1;
     // const leftTileValue = board[moveLeftRow][moveLeftCol];
     // const rightTileValue = board[moveRightRow][moveRightCol];
+    // if (board[moveRightRow][moveRightCol] === -1) {
+    //     moveRightRow += 1;
+    //     moveRightCol += 1;
+    // }
     if (board[moveRightRow][moveRightCol] === 0) {
         board[moveRightRow][moveRightCol] = 2;
     }
@@ -117,7 +123,7 @@ function selectRed (event) {
     renderBoard();
 }
 
-function moveRed (event) {
+function move (event) {
     // select currently active piece
     const selectedPiece = event.target;
     const id = selectedPiece.id;
@@ -125,42 +131,25 @@ function moveRed (event) {
     const col = Number(id.charAt(3));
     if (board[row][col] === 2 && turn === -1) {
         board[row][col] = -1;
-        activePiece = false;
+        isPieceActive = false;
         turn *= -1;
         
     } else if (board[row][col] === 2 && turn === 1) {
         board[row][col] = 1;
-        activePiece = false;
+        isPieceActive = false;
         turn *= -1;
+    } else {
+        return;
     }
     console.log(event.target);
-    // activePiece = false;
-    // turn *= -1;
     let activePieces = document.querySelector('.active');
     let activePiecesId = activePieces.id;
     const activePiecesRow = Number(activePiecesId.charAt(1));
     const activePiecesCol = Number(activePiecesId.charAt(3));
     board[activePiecesRow][activePiecesCol] = 0;
-    activePieces.classList.remove();
+    activePieces.classList.remove('active');
     render();
 }
-
-// function moveGreen (event) {
-//     // select currently active piece
-//     const selectedPiece = event.target;
-//     const id = selectedPiece.id;
-//     const row = Number(id.charAt(1));
-//     const col = Number(id.charAt(3));
-//     if (board[row][col] === 2) {
-//         board[row][col] = 1;
-//     }
-//     console.log(event.target);
-//     turn *= -1;
-//     activePiece = false;
-//     render();
-// }
-
-
 
 
 function render () {
@@ -179,13 +168,16 @@ function renderBoard () {
         rowArr.forEach(function(cellVal, colIdx) {
             const cellId = `r${rowIdx}c${colIdx}`;
             const cellEl = document.getElementById(cellId);
-            cellEl.style.backgroundColor = colors[cellVal];
             if(cellVal === 1 || cellVal === -1) {
                 cellEl.style.borderRadius = '50%';
             }
-            if(cellVal === 2 && activePiece === false) {
-                return cellVal = 0;
+            if(cellVal === 2 && isPieceActive === false) {
+                board[rowIdx][colIdx] = 0;
             }
+            if (board[rowIdx][colIdx] === 0) {
+                cellEl.style.borderRadius = 'unset';
+            }
+            cellEl.style.backgroundColor = colors[board[rowIdx][colIdx]];
         });
     });
 }

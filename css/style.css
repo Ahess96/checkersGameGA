@@ -27,6 +27,10 @@ h1 {
     margin: .2vmin;
 }
 
+.active {
+    box-shadow: 1vmin 1vmin 1vmin rgba(0, 0, 0, 0.4);
+}
+
 #board {
     display: grid;
     grid-template-columns: repeat(8, 10vmin);
