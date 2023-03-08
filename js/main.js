@@ -84,18 +84,22 @@ function selectGreen (event) {
     const id = greenPiece.id;
     const row = Number(id.charAt(1));
     const col = Number(id.charAt(3));
-    const moveLeftRow = row + 1;
-    const moveLeftCol = col - 1;
-    const moveRightRow = row + 1;
-    const moveRightCol = col + 1;
+    let moveLeftRow = row + 1;
+    let moveLeftCol = col - 1;
+    let moveRightRow = row + 1;
+    let moveRightCol = col + 1;
     // const leftTileValue = board[moveLeftRow][moveLeftCol];
     // const rightTileValue = board[moveRightRow][moveRightCol];
-    // if (board[moveRightRow][moveRightCol] === -1) {
-    //     moveRightRow += 1;
-    //     moveRightCol += 1;
-    // }
+    if (board[moveRightRow][moveRightCol] === -1) {
+        moveRightRow += 1;
+        moveRightCol += 1;
+    }
     if (board[moveRightRow][moveRightCol] === 0) {
         board[moveRightRow][moveRightCol] = 2;
+    }
+    if (board[moveLeftRow][moveLeftCol] === -1) {
+        moveLeftRow += 1;
+        moveLeftCol -= 1;
     }
     if (board[moveLeftRow][moveLeftCol] === 0) {
         board[moveLeftRow][moveLeftCol] = 2;
@@ -108,14 +112,22 @@ function selectRed (event) {
     const id = redPiece.id;
     const row = Number(id.charAt(1));
     const col = Number(id.charAt(3));
-    const moveLeftRow = row - 1;
-    const moveLeftCol = col - 1;
-    const moveRightRow = row - 1;
-    const moveRightCol = col + 1;
+    let moveLeftRow = row - 1;
+    let moveLeftCol = col - 1;
+    let moveRightRow = row - 1;
+    let moveRightCol = col + 1;
     // const leftTileValue = board[moveLeftRow][moveLeftCol];
     // const rightTileValue = board[moveRightRow][moveRightCol];
+    if (board[moveRightRow][moveRightCol] === 1) {
+        moveRightRow -= 1;
+        moveRightCol += 1;
+    }
     if (board[moveRightRow][moveRightCol] === 0) {
         board[moveRightRow][moveRightCol] = 2;
+    }
+    if (board[moveLeftRow][moveLeftCol] === 1) {
+        moveLeftRow -= 1;
+        moveLeftCol -= 1;
     }
     if (board[moveLeftRow][moveLeftCol] === 0) {
         board[moveLeftRow][moveLeftCol] = 2;
@@ -155,7 +167,7 @@ function move (event) {
 function render () {
     renderBoard();
     renderMessage();
-    renderControls();
+    // renderControls();
     // selectActivePiece();
 }
 
@@ -190,7 +202,7 @@ function renderMessage () {
     }
 }
 
-function renderControls () {
+// function renderControls () {
 
-}
+// }
 
