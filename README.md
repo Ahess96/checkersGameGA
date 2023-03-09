@@ -65,7 +65,7 @@ Turn, location in the array, movement and winner logic all rely on the presence 
 
 There are two event listeners in the JavaScript. One is responsible for restarting the game. The other is responsible for responding to selecting a peice and moving it.
 
-![GIF-of-gameplay](<div style="width:100%;height:0;padding-bottom:105%;position:relative;"><iframe src="https://giphy.com/embed/VQZz6F7zfE7N7rkg9M" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/VQZz6F7zfE7N7rkg9M">via GIPHY</a></p>)
+![GIF-of-gameplay](https://giphy.com/embed/VQZz6F7zfE7N7rkg9M)
 
 ## HIGHLIGHTS
 
