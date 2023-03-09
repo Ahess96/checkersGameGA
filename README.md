@@ -57,7 +57,7 @@ A glabal two-dimensional array is responsible for rendering the game pieces and 
 
 ## GAMEPLAY
 
-[LIVE DEMO]()
+[LIVE DEMO](https://ahess96.github.io/checkersGameGA/)
 
 Gameplay is kept simple and accessible to most audiences. A message at the top of the board displays whose turn it is and each player gets one move per turn, at which point the turn ends and the message renders that it is the other player's turn.
 
@@ -65,11 +65,20 @@ Turn, location in the array, movement and winner logic all rely on the presence 
 
 There are two event listeners in the JavaScript. One is responsible for restarting the game. The other is responsible for responding to selecting a peice and moving it.
 
+![GIF-of-gameplay](<div style="width:100%;height:0;padding-bottom:105%;position:relative;"><iframe src="https://giphy.com/embed/VQZz6F7zfE7N7rkg9M" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/VQZz6F7zfE7N7rkg9M">via GIPHY</a></p>)
+
 ## HIGHLIGHTS
 
 The checkers game is fully functional without bugs or error messages in the console. The styling is sleek and minimalist with a traditional spin of using the colors "red" and "green".
 
-This game required a lot of logic but was kept to a relatively minimal amount of code written in a semantic way
+This game required a lot of logic but was kept to a relatively minimal amount of code written in a semantic way and is in large part able to be edited for future modifications or features. 
+
+## CHALLENGES
+
+While the two dimensional board array seems like a great, straightfoward way to track pieces, it has its complications. One of the challenges is being able to consistently access a location on the array and linking it to the div tag that it corresponds to. But this conceptual challenge has the perk of being clear and dynamic during gameplay. 
+
+## FUTURE ENHANCEMENTS
+
 
 
 
