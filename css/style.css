@@ -35,12 +35,11 @@ h1 {
     display: grid;
     grid-template-columns: repeat(8, 10vmin);
     grid-template-rows: repeat(8, 10vmin);
-    /* gap: 0.2vmin; */
     border: .4vmin solid brown;
 }
 
 #board > div {
-    border: 0.1vmin solid black;
+    border: 0.15vmin solid black;
     transform: scale(0.965);
 }
 

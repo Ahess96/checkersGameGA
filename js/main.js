@@ -85,8 +85,6 @@ function selectGreen (event) {
     let moveLeftCol = col - 1;
     let moveRightRow = row + 1;
     let moveRightCol = col + 1;
-    // const leftTileValue = board[moveLeftRow][moveLeftCol];
-    // const rightTileValue = board[moveRightRow][moveRightCol];
     if (moveRightRow < 8 && board[moveRightRow][moveRightCol] === -1) {
         moveRightRow += 1;
         moveRightCol += 1;
@@ -113,9 +111,6 @@ function selectRed (event) {
     let moveLeftCol = col - 1;
     let moveRightRow = row - 1;
     let moveRightCol = col + 1;
-    // if ((row > 0 && col > 0) || )
-    // const leftTileValue = board[moveLeftRow][moveLeftCol];
-    // const rightTileValue = board[moveRightRow][moveRightCol];
     if (moveRightRow > -1 && board[moveRightRow][moveRightCol] === 1) {
         moveRightRow -= 1;
         moveRightCol += 1;
@@ -225,7 +220,6 @@ function render () {
     renderBoard();
     isWinner();
     renderMessage();
-    // renderControls();
 }
 
 // The following function was influenced by GA's code along for Connect Four **
@@ -280,7 +274,4 @@ function renderMessage () {
     }
 }
 
-// function renderControls () {
-
-// }
 

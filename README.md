@@ -1,47 +1,76 @@
-# checkersGameGA
-PROPOSAL
+# CHECKERS
+## PROPOSAL
 
-The goal for Project 1 is to create a player v player checkers game that allows two players to play one another on the same computer. Each player will only be allowed to move a piece if it is their turn.
+The goal for this game is to create a player v player checkers game that allows two players to play one another on the same computer. Each player is only be allowed to move a piece if it is their turn and their turn ends after the move.
 
-Players will be able to capture and remove their opponent's piece and the board will be automatically updated with the piece missing once that happens.
+Players are able to capture and remove their opponent's piece and the board automatically updates with the piece missing once that happens.
 
-There is no plans to have pieces be able to become a king piece. 
+## BEHIND THE GAME
 
+![Checkers-Title](images/title.jpeg)
 
+This version of checkers is a browser ready game that allows two players to play against eachother at the same computer. A winner is determined when all of the pieces of one player have been captured, and the game can be restarted if a stalemate has been reached. 
 
+The game is written using HTML, CSS and JavaScript. 
 
-click act like aswitch
-    first click = true, 2nd false
-then build control flow
-when 1st click is something, grab it
-2nd click move it
+An initialization function is called immediately once the page loads is responsible for rendering the board contents and the message displaying whose turn it is. 
 
+The HTML contains 64 "div" elements, each with their own ID but otherwise contain no information about the presence of a player piece. 
 
+``` HTML
+    <body>
+        ....
+        <section id='board'>
+            
+            <div id="r0c0"></div>
+            <div id="r0c1"></div>
+            <div id="r0c2"></div>
+            <div id="r0c3"></div>
+            <div id="r0c4"></div>
+            <div id="r0c5"></div>
+            <div id="r0c6"></div>
+            <div id="r0c7"></div>
+            
+            ....
+        </section>
+    </body>
+```
 
+A glabal two-dimensional array is responsible for rendering the game pieces and their location on the board, which is linked to the "div" elements based on their id. 
 
-
-
-how to tell if we're at click one or two
-
-first click is grabbing el, so var off
-click pie
-
-use activePiece to toggle
-
-
-boardDivs.forEach(div => {
-    div.addEventListener('click', function (event) {
-        if (activePiece === false) {
-            const newLocation = (event.target);
-            renderBoard(newLocation)
-        }
+``` JS
+    function init () {
+    // numbers at array indexes represent no player present (0) or player present (1 / -1)
+        board = [
+            [1, 0, 1, 0, 1, 0, 1, 0],
+            [0, 1, 0, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, -1, 0, -1, 0, -1, 0, -1],
+            [-1, 0, -1, 0, -1, 0, -1, 0],
+            [0, -1, 0, -1, 0, -1, 0, -1],
+        ];
+        ....
     }
-} 
+```
 
-let boardDivs = [...document.querySelectorAll('#board > div')];
-const colIdx = boardDivs.indexOf(evt.target);
-const colArr = board[colIdx]
-console.log(colIdx)
+## GAMEPLAY
+
+[LIVE DEMO]()
+
+Gameplay is kept simple and accessible to most audiences. A message at the top of the board displays whose turn it is and each player gets one move per turn, at which point the turn ends and the message renders that it is the other player's turn.
+
+Turn, location in the array, movement and winner logic all rely on the presence of the numbers 1 and -1 in the board array. 
+
+There are two event listeners in the JavaScript. One is responsible for restarting the game. The other is responsible for responding to selecting a peice and moving it.
+
+## HIGHLIGHTS
+
+The checkers game is fully functional without bugs or error messages in the console. The styling is sleek and minimalist with a traditional spin of using the colors "red" and "green".
+
+This game required a lot of logic but was kept to a relatively minimal amount of code written in a semantic way
+
 
 
 
