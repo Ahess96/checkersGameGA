@@ -10,7 +10,7 @@ const colors = {
 let board; // Array of 8 column arrays with 8 indexes
 let turn; // 1 or -1
 let isPieceActive;
-let winner; // null = no winner; 1/-1 = winner
+let winner = null; // null = no winner; 1/-1 = winner
 let king; // new rules for pieces that have become kings
 
   /*----- cached elements  -----*/
@@ -40,7 +40,7 @@ function init () {
         [0, -1, 0, -1, 0, -1, 0, -1],
     ];
     boardDivs.forEach(div => {
-        div.classList.remove('active');
+        div.classList.remove('active', 'just-moved');
     })
     turn = -1;
     winner = null;
@@ -223,6 +223,7 @@ function captureGreenPiece () {
 
 function render () {
     renderBoard();
+    isWinner();
     renderMessage();
     // renderControls();
 }
@@ -248,6 +249,27 @@ function renderBoard () {
             cellEl.style.backgroundColor = colors[board[rowIdx][colIdx]];
         });
     });
+}
+
+function isWinner() {
+    let greenPresent = false;
+    let redPresent = false;
+    board.forEach(rowArr => {
+        rowArr.forEach(cellVal => {
+            if(cellVal === -1) {
+                redPresent = true;
+            }
+            if(cellVal === 1) {
+                greenPresent = true;
+            }
+        })
+    })
+    if (!greenPresent) {
+        winner = -1
+    }
+    if (!redPresent) {
+        winner = 1
+    }
 }
 
 function renderMessage () {
