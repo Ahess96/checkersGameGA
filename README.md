@@ -1,19 +1,16 @@
 # CHECKERS
-## PROPOSAL
-
-The goal for this game is to create a player v player checkers game that allows two players to play one another on the same computer. Each player is only be allowed to move a piece if it is their turn and their turn ends after the move.
-
-Players are able to capture and remove their opponent's piece and the board automatically updates with the piece missing once that happens.
 
 ## BEHIND THE GAME
 
 ![Checkers-Title](images/title.jpeg)
 
+![VS Code](https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white) ![HTML](https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E) ![CSS](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white) ![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)
+
 This version of checkers is a browser ready game that allows two players to play against eachother at the same computer. A winner is determined when all of the pieces of one player have been captured, and the game can be restarted if a stalemate has been reached. 
 
 The game is written using HTML, CSS and JavaScript. 
 
-An initialization function is called immediately once the page loads is responsible for rendering the board contents and the message displaying whose turn it is. 
+An initialization function called immediately once the page loads is responsible for rendering the board contents and the message displaying whose turn it is. 
 
 The HTML contains 64 "div" elements, each with their own ID but otherwise contain no information about the presence of a player piece. 
 
@@ -65,11 +62,11 @@ Turn, location in the array, movement and winner logic all rely on the presence 
 
 There are two event listeners in the JavaScript. One is responsible for restarting the game. The other is responsible for responding to selecting a peice and moving it.
 
-![GIF-of-gameplay](https://giphy.com/embed/VQZz6F7zfE7N7rkg9M)
+![GIF-of-gameplay](images/giphy.gif)
 
 ## HIGHLIGHTS
 
-The checkers game is fully functional without bugs or error messages in the console. The styling is sleek and minimalist with a traditional spin of using the colors "red" and "green".
+The checkers game is fully functional without bugs or error messages in the console. The styling is designed such that the user enjoys some aspects of the outdoors while playing.
 
 This game required a lot of logic but was kept to a relatively minimal amount of code written in a semantic way and is in large part able to be edited for future modifications or features. 
 
@@ -77,8 +74,26 @@ This game required a lot of logic but was kept to a relatively minimal amount of
 
 While the two dimensional board array seems like a great, straightfoward way to track pieces, it has its complications. One of the challenges is being able to consistently access a location on the array and linking it to the div tag that it corresponds to. But this conceptual challenge has the perk of being clear and dynamic during gameplay. 
 
+The function below gives an example of how the id of any given div corresponds to the location in the array when the array is looked at as a gameboard itself. The whole JavaScript is based on grabbing a div by its id and then setting conditionals to determine its assignment.
+
+``` JS
+function renderBoard () {
+    // render the board such that the values held in the board array are reflected by the color of the player's pieces
+    // this iterates through each array in board
+    board.forEach(function(rowArr, rowIdx) {
+        // now iterate through each index within the nested arrays which represent row
+        rowArr.forEach(function(cellVal, colIdx) {
+            const cellId = `r${rowIdx}c${colIdx}`;
+            const cellEl = document.getElementById(cellId);
+            if(cellVal === 2 && isPieceActive === false) {
+                board[rowIdx][colIdx] = 0;
+            }
+            cellEl.style.background = icons[board[rowIdx][colIdx]];
+```
+
 ## FUTURE ENHANCEMENTS
 
+Future updates to this game may include options for different themes, a functional king piece and embedded sounds. The themes will entail changes to the appearence of the pieces as well as to the overall board, and selection of these themes would be accessible on the same page as gameplay. A king piece will be able to move in all directions and take on a new appearence as well, while sounds will reinforce clicks, movements, and the winner.
 
 
 

@@ -1,9 +1,14 @@
   /*----- constants -----*/
-const colors = {
-    '0': 'white',
-    '1': 'green',
-    '-1': 'red',
+const icons = {
+    '0': 'rgba(255, 235, 205, 0.6)',
+    '1': 'url(./images/Yosemite.jpg)',
+    '-1': 'url(./images/glacier.jpeg)',
     '2' : 'yellow'
+}
+
+const players = {
+    '1': 'Yosemite',
+    '-1': 'Glacier'
 }
 
   /*----- state variables -----*/
@@ -11,19 +16,13 @@ let board; // Array of 8 column arrays with 8 indexes
 let turn; // 1 or -1
 let isPieceActive;
 let winner = null; // null = no winner; 1/-1 = winner
-let king; // new rules for pieces that have become kings
 
   /*----- cached elements  -----*/
 const msgEl = document.querySelector('h1');
 const btn = document.querySelector('button');
 let boardDivs = document.querySelectorAll('#board > div');
-let gameBoard = document.getElementById('board')
 
-  /*----- event listeners -----*/
-// gameBoard.addEventListener('click', movePiece);
-btn.addEventListener('click', init);
-
-  /*----- functions -----*/
+  /*----- Initialize -----*/
 // initialize state of the board then evoke render ()
 init (); 
 
@@ -48,21 +47,27 @@ function init () {
     render();
 }
 
+/*----- event listeners -----*/
+btn.addEventListener('click', init);
+
+// Set an event listener on each div in the board
 boardDivs.forEach(div => {
     div.addEventListener('click', function (event) {
+        // The game begins with isActivePiece = false, so the first click will only register at a dic that meets the conditions
         if(isPieceActive === false) {
-            if(div.style.backgroundColor === 'green' && turn === 1 && winner === null) {
+            if(div.style.background === 'url("./images/Yosemite.jpg") 0% 0% / cover' && turn === 1 && winner === null) {
                 isPieceActive = true
                 div.setAttribute('class', 'active')
-                selectGreen(event);
+                selectYosemite(event);
 
-            } else if(div.style.backgroundColor === 'red' && turn === -1 && winner === null) {
+            } else if(div.style.background === 'url("./images/glacier.jpeg") 0% 0% / cover' && turn === -1 && winner === null) {
                 isPieceActive = true
                 div.setAttribute('class', 'active')
-                selectRed(event);
+                selectGlacier(event);
             }
+         // If a piece is alreay selected, the next click will allow the player to unselect their piece and click on a new piece 
         } else if(isPieceActive === true) {
-            if (div.style.backgroundColor === 'red' || div.style.backgroundColor === 'green') {
+            if (div.style.background === 'url("./images/glacier.jpeg") 0% 0% / cover' || div.style.background === 'url("./images/Yosemite.jpg") 0% 0% / cover') {
                 let activeDiv = document.querySelector('.active');
                 activeDiv.classList.remove('active');
                 isPieceActive = false;
@@ -74,13 +79,15 @@ boardDivs.forEach(div => {
     })
 })
 
+/*----- Functions  -----*/
 
-// When a user clicks, update the board with available move options, then listen for a click on an empty div and update the state then call render;
-function selectGreen (event) {
-    const greenPiece = event.target;
-    const id = greenPiece.id;
+// When a user clicks, update the board with available move options then listen for a click on an empty div and update the state then call render
+function selectYosemite (event) {
+    const yosemitePiece = event.target;
+    const id = yosemitePiece.id;
     const row = Number(id.charAt(1));
     const col = Number(id.charAt(3));
+    // Since Yosemite moves down the board, their moves will always be at least one row greater than their current row
     let moveLeftRow = row + 1;
     let moveLeftCol = col - 1;
     let moveRightRow = row + 1;
@@ -102,9 +109,9 @@ function selectGreen (event) {
     renderBoard();
 }
 
-function selectRed (event) {
-    const redPiece = event.target;
-    const id = redPiece.id;
+function selectGlacier (event) {
+    const glacierPiece = event.target;
+    const id = glacierPiece.id;
     const row = Number(id.charAt(1));
     const col = Number(id.charAt(3));
     let moveLeftRow = row - 1;
@@ -129,16 +136,17 @@ function selectRed (event) {
 }
 
 function move (event) {
-    // select currently active piece
+    // select currently active piece by accessing the event object 
     const selectedPiece = event.target;
     const id = selectedPiece.id;
     const row = Number(id.charAt(1));
     const col = Number(id.charAt(3));
+    // Listen for a click at an allowable spot and change the value in the array, switch turns and assign a new class
     if (board[row][col] === 2 && turn === -1) {
         board[row][col] = -1;
         const justMovedPiece = document.getElementById(`r${row}c${col}`);
         justMovedPiece.setAttribute('class', 'just-moved');
-        captureGreenPiece();
+        captureYosemitePiece();
         isPieceActive = false;
         turn *= -1;
         
@@ -146,7 +154,7 @@ function move (event) {
         board[row][col] = 1;
         const justMovedPiece = document.getElementById(`r${row}c${col}`);
         justMovedPiece.setAttribute('class', 'just-moved');
-        captureRedPiece();
+        captureGlacierPiece();
         isPieceActive = false;
         turn *= -1;
     } else {
@@ -163,54 +171,54 @@ function move (event) {
     render();
 }
 
-function captureRedPiece () {
-    // case for red being captured
+function captureGlacierPiece () {
+    // case for Glacier being captured
     let activePieces = document.querySelector('.active');
     let activePiecesId = activePieces.id;
     const row = Number(activePiecesId.charAt(1));
     const col = Number(activePiecesId.charAt(3));
-    const moveLeftRowGreen = row + 1;
-    const moveLeftColGreen = col - 1;
-    const moveRightRowGreen = row + 1;
-    const moveRightColGreen = col + 1;
-    const rightOfGreen = board[moveRightRowGreen][moveRightColGreen];
-    const leftOfGreen = board[moveLeftRowGreen][moveLeftColGreen];
+    const moveLeftRowYosemite = row + 1;
+    const moveLeftColYosemite = col - 1;
+    const moveRightRowYosemite = row + 1;
+    const moveRightColYosemite = col + 1;
+    const rightOfYosemite = board[moveRightRowYosemite][moveRightColYosemite];
+    const leftOfYosemite = board[moveLeftRowYosemite][moveLeftColYosemite];
     if (row < 6 && col < 6) {
-        const greenCaptureRight = document.getElementById(`r${row + 2}c${col + 2}`);
-        if(rightOfGreen === -1 && greenCaptureRight.classList.contains('just-moved')) {
-            board[moveRightRowGreen][moveRightColGreen] = 0;
+        const yosemiteCaptureRight = document.getElementById(`r${row + 2}c${col + 2}`);
+        if(rightOfYosemite === -1 && yosemiteCaptureRight.classList.contains('just-moved')) {
+            board[moveRightRowYosemite][moveRightColYosemite] = 0;
         }
     }
     if (row < 6 && col > 1) {
-        const greenCaptureLeft = document.getElementById(`r${row + 2}c${col - 2}`);
-        if(leftOfGreen === -1 && greenCaptureLeft.classList.contains('just-moved')) {
-            board[moveLeftRowGreen][moveLeftColGreen] = 0;
+        const yosemiteCaptureLeft = document.getElementById(`r${row + 2}c${col - 2}`);
+        if(leftOfYosemite === -1 && yosemiteCaptureLeft.classList.contains('just-moved')) {
+            board[moveLeftRowYosemite][moveLeftColYosemite] = 0;
         }
     } 
 }
 
-// case for green being captured  
-function captureGreenPiece () {
+// case for Yosemite being captured  
+function captureYosemitePiece () {
     let activePieces = document.querySelector('.active');
     let activePiecesId = activePieces.id;
     const row = Number(activePiecesId.charAt(1));
     const col = Number(activePiecesId.charAt(3));
-    const moveLeftRowRed = row - 1;
-    const moveLeftColRed = col - 1;
-    const moveRightRowRed = row - 1;
-    const moveRightColRed = col + 1;
-    const rightOfRed = board[moveRightRowRed][moveRightColRed];
-    const leftOfRed = board[moveLeftRowRed][moveLeftColRed];
+    const moveLeftRowGlacier = row - 1;
+    const moveLeftColGlacier = col - 1;
+    const moveRightRowGlacier = row - 1;
+    const moveRightColGlacier = col + 1;
+    const rightOfGlacier = board[moveRightRowGlacier][moveRightColGlacier];
+    const leftOfGlacier = board[moveLeftRowGlacier][moveLeftColGlacier];
     if (row > 1 && col < 6) {
-        const redCaptureRight = document.getElementById(`r${row - 2}c${col + 2}`);
-        if(rightOfRed === 1 && redCaptureRight.classList.contains('just-moved')) {
-            board[moveRightRowRed][moveRightColRed] = 0;
+        const glacierCaptureRight = document.getElementById(`r${row - 2}c${col + 2}`);
+        if(rightOfGlacier === 1 && glacierCaptureRight.classList.contains('just-moved')) {
+            board[moveRightRowGlacier][moveRightColGlacier] = 0;
         }
     }
     if (row > 1 && col > 1) {
-        const redCaptureLeft = document.getElementById(`r${row - 2}c${col - 2}`);
-        if(leftOfRed === 1 && redCaptureLeft.classList.contains('just-moved')) {
-            board[moveLeftRowRed][moveLeftColRed] = 0;
+        const glacierCaptureLeft = document.getElementById(`r${row - 2}c${col - 2}`);
+        if(leftOfGlacier === 1 && glacierCaptureLeft.classList.contains('just-moved')) {
+            board[moveLeftRowGlacier][moveLeftColGlacier] = 0;
         }
     }
 }
@@ -231,46 +239,41 @@ function renderBoard () {
         rowArr.forEach(function(cellVal, colIdx) {
             const cellId = `r${rowIdx}c${colIdx}`;
             const cellEl = document.getElementById(cellId);
-            if(cellVal === 1 || cellVal === -1) {
-                cellEl.style.borderRadius = '50%';
-            }
             if(cellVal === 2 && isPieceActive === false) {
                 board[rowIdx][colIdx] = 0;
             }
-            if (board[rowIdx][colIdx] === 0) {
-                cellEl.style.borderRadius = 'unset';
-            }
-            cellEl.style.backgroundColor = colors[board[rowIdx][colIdx]];
+            cellEl.style.background = icons[board[rowIdx][colIdx]];
+            cellEl.style.backgroundSize = 'cover';
         });
     });
 }
 
 function isWinner() {
-    let greenPresent = false;
-    let redPresent = false;
+    let isYosemitePresent = false;
+    let isGlacierPresent = false;
     board.forEach(rowArr => {
         rowArr.forEach(cellVal => {
             if(cellVal === -1) {
-                redPresent = true;
+                isGlacierPresent = true;
             }
             if(cellVal === 1) {
-                greenPresent = true;
+                isYosemitePresent = true;
             }
         })
     })
-    if (!greenPresent) {
+    if (!isYosemitePresent) {
         winner = -1
     }
-    if (!redPresent) {
+    if (!isGlacierPresent) {
         winner = 1
     }
 }
 
 function renderMessage () {
     if(winner) {
-        msgEl.innerHTML = `<span style="color: ${colors[winner]}">${colors[winner].toUpperCase()} Won!</span>`;
+        msgEl.innerHTML = `<span style="color: red">${players[winner].toUpperCase()} Won!</span>`;
     } else {
-        msgEl.innerHTML = `<span style="color: ${colors[turn]}">${colors[turn].toUpperCase()}'s Turn...</span>`;
+        msgEl.innerHTML = `<span style="color: green">${players[turn].toUpperCase()}'s Turn...</span>`;
     }
 }
 
